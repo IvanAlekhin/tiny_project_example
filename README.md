@@ -21,7 +21,7 @@ Then install and activate virtualenv:
 - ```$ pipenv shell```
 
 ## Usage
-Before this stage I assume that your virtualenv is activated (pipenv shell).
+Before this stage I assume that your virtualenv is activated.
 
 Run with your own file:
 ```
@@ -40,9 +40,11 @@ where file.txt is something like
 -----####-
 ----------
 ```
+After scanning this file, program returns 5.  It is number of ships in the text field.
 
 
-Run tests:
+
+For running tests:
 ```
 $ pytest tests/test_sea_battle.py
 ```

@@ -1,4 +1,3 @@
-from collections import defaultdict
 import logging
 logging.basicConfig(format='%(asctime)s \t [%(levelname)s | %(filename)s:%(lineno)s] \t %(message)s',
                     level=logging.INFO)
@@ -11,7 +10,15 @@ class ShipFinder:
         self.filename = filename
         self.ship_list = []
 
-    def count_ships(self):
+    def count_ships(self) -> int:
+        """
+        Method has next logic:
+        Iterate line for line in text file.
+        Iterate symbol for symbol in every line.
+        If symbol is #, add it coordinates to special place - ship_list. This coordinates also calls deck as ship part.
+        Coordinates is tuple(x, y) which first element - column index (x), second - line index (y).
+        Filled ship_list looks like [[(x, y), (x+1, y)], [(x2, y2)], ...] - lists with coordinates inside is ships.
+        """
         LOGGER.info('Try to open file from path {}'.format(self.filename))
         with open(self.filename, 'r') as f:
             line_counter = 0
@@ -23,7 +30,6 @@ class ShipFinder:
                         self.find_ship_for_deck(line_counter, element_counter)
                     element_counter += 1
                 line_counter += 1
-        self._validate_ships_location()
         LOGGER.info('all ships coordinates: {}'.format(self.ship_list))
         return len(self.ship_list)
 
@@ -35,6 +41,7 @@ class ShipFinder:
 
                 if is_deck_nearby and not is_deck_nearby_diagonally:
                     ship.append((x, y))  # deck relates to existing ship
+                    self._validate_ship_location(ship)
                     return
 
         self.ship_list.append([(x, y)])  # new ship with one deck
@@ -47,14 +54,12 @@ class ShipFinder:
         elif self.first_line_len != len(line.strip()):
             raise ValueError('len of lines must be equal, but something wrong with {}-th line'.format(line_counter))
 
-    def _validate_ships_location(self):
-        for ship in self.ship_list:
+    def _validate_ship_location(self, ship: list):
+        x_ship_detector = set()
+        y_ship_detector = set()
 
-            x_ship_detector = set()
-            y_ship_detector = set()
-
-            for x, y in ship:
-                x_ship_detector.add(x)
-                y_ship_detector.add(y)
-            if len(x_ship_detector) != 1 and len(y_ship_detector) != 1:  # then ship isn't located on one line
-                raise ValueError('Ships are too close')
+        for x, y in ship:
+            x_ship_detector.add(x)
+            y_ship_detector.add(y)
+        if len(x_ship_detector) != 1 and len(y_ship_detector) != 1:  # then ship isn't located on one line
+            raise ValueError('Ships are too close')
