@@ -1,9 +1,9 @@
-#Tiny project example
+# Tiny project example
 This program do only one simple thing: returns count of ships on the text field.
 
-##Installation
+## Installation
 ``` bash
-$ git clone
+$ git clone https://github.com/IvanAlekhin/tiny_project_example.git
 ```
 
 If you're on MacOS
@@ -20,7 +20,7 @@ Then install and activate virtualenv:
 
 - ```$ pipenv shell```
 
-##Usage
+## Usage
 Before this stage I assume that your virtualenv is activated (pipenv shell).
 
 Run with your own file:
